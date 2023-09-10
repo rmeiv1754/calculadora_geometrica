@@ -1,3 +1,8 @@
+# Dar permisos varios: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+# Activar el entorno virtual: Ir a la carpeta SCRIPT y ejecutar el file .\activate
+# Ejecutar código: py micodigo.py
+
+
 import tkinter as tk
 import math
 import PIL
@@ -78,21 +83,71 @@ def calcular_area(figura):
         calcular_area_cubo()
     elif figura == "Esfera":
         calcular_area_esfera()
+    elif figura == "Cilindro":
+        calcular_area_cilindro()
+    elif figura == "Cono":
+        calcular_area_cono()
+    elif figura == "Pirámide":
+        calcular_area_piramide()
+    elif figura == "Paralelepípedo":
+        calcular_area_paralelepipedo()
+    elif figura == "Elipsoide":
+        calcular_area_elipsoide()
+    elif figura == "Octaedro":
+        calcular_area_octaedro()
 
 def calcular_volumen(figura):
     if figura == "Cubo":
         calcular_volumen_cubo()
     elif figura == "Esfera":
         calcular_volumen_esfera()
-
+    elif figura == "Cilindro":
+        calcular_volumen_cilindro()
+    elif figura == "Cono":
+        calcular_volumen_cono()
+    elif figura == "Pirámide":
+        calcular_volumen_piramide()
+    elif figura == "Paralelepípedo":
+        calcular_volumen_paralelepipedo()
+    elif figura == "Elipsoide":
+        calcular_volumen_elipsoide()
+    elif figura == "Octaedro":
+        calcular_volumen_octaedro()
 
 #funciones para calcular el area de las figuras
 def calcular_area_cubo():
 
     #creamos el modal
-    ventana_modal_area_cubo = tk.Toplevel(ventana)
-    ventana_modal_area_cubo.title("Cálculo de Área - Cubo")
-    ventana_modal_area_cubo.geometry("600x400")
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Área - Cubo")
+    ventana_modal.geometry("600x400")
+
+    ventana_modal_titulo = tk.Label(ventana_modal, text="Ingresa los datos", font=fuente_titulo_montserrat)
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=4)
+
+    ventana_modal_input = tk.Label(ventana_modal, text="Lado: ", font=fuente_montserrat)
+    ventana_modal_input.grid(row=1, column=1, padx=10)
+
+    lado_ingresar = tk.Entry(ventana_modal, width=30)
+    lado_ingresar.grid(row=1, column=2, padx=10)
+
+    ventana_modal_magnitud = tk.Label(ventana_modal, text="Magnitud: ", font=fuente_montserrat)
+    ventana_modal_magnitud.grid(row=1, column=3, padx=10)
+
+    #menu desplegable
+    opcion_var = tk.StringVar()
+    opcion_var.set("elegir")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones=tk.OptionMenu(ventana_modal, opcion_var, *lista_magnitud)
+    opciones.grid(row=1, column=4, padx=10)
+    
+    #se muestra la opcion seleccionada
+    etiqueta_resultado = tk.Label(ventana_modal, text="")
+    etiqueta_resultado.grid(row=1, column=0)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones.config()
 
 def calcular_volumen_cubo():
 
