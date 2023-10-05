@@ -4,6 +4,7 @@
 
 
 import tkinter as tk
+from tkinter import messagebox
 import math
 import PIL
 from PIL import ImageTk, Image
@@ -120,30 +121,61 @@ def calcular_area_cubo():
     #creamos el modal
     ventana_modal = tk.Toplevel(ventana)
     ventana_modal.title("Cálculo de Área - Cubo")
-    ventana_modal.geometry("600x400")
+    ventana_modal.geometry("600x310")
 
-    ventana_modal_titulo = tk.Label(ventana_modal, text="Ingresa los datos", font=fuente_titulo_montserrat)
-    ventana_modal_titulo.grid(row=0, column=0, columnspan=4)
+    #dividimos en 2 la ventana
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
 
-    ventana_modal_input = tk.Label(ventana_modal, text="Lado: ", font=fuente_montserrat)
-    ventana_modal_input.grid(row=1, column=1, padx=10)
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=5, padx=10, pady=10)
+    
+    ventana_modal_input = tk.Label(frame_entrada, text="Lado: ", font=fuente_montserrat, bg="#FFD7D7")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
 
-    lado_ingresar = tk.Entry(ventana_modal, width=30)
-    lado_ingresar.grid(row=1, column=2, padx=10)
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
 
-    ventana_modal_magnitud = tk.Label(ventana_modal, text="Magnitud: ", font=fuente_montserrat)
+    ventana_modal_magnitud = tk.Label(frame_entrada, text="Tipo de magnitud: ", font=fuente_montserrat, bg="#FFD7D7")
     ventana_modal_magnitud.grid(row=1, column=3, padx=10)
 
     #menu desplegable
     opcion_var = tk.StringVar()
     opcion_var.set("elegir")
     lista_magnitud = ["centímetros", "pulgadas", "metros"]
-    opciones=tk.OptionMenu(ventana_modal, opcion_var, *lista_magnitud)
+    opciones = tk.OptionMenu(frame_entrada, opcion_var, *lista_magnitud)
     opciones.grid(row=1, column=4, padx=10)
     
     #se muestra la opcion seleccionada
-    etiqueta_resultado = tk.Label(ventana_modal, text="")
-    etiqueta_resultado.grid(row=1, column=0)
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    
+
+    def calcular_y_mostrar_area():
+        # Obtener el valor ingresado en lado_ingresar
+        lado = float(lado_ingresar.get())
+
+        magnitud_seleccionada = opcion_var.get()
+        if magnitud_seleccionada == "elegir":
+            messagebox.showerror("Error", "Por favor, selecciona un tipo de magnitud antes de calcular el área.")
+            retur
+        
+        # Calcular el área del cubo
+        area = 6 * lado * lado
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"Área del cubo: {area}", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular Área", command=calcular_y_mostrar_area)
+    calcular_button.grid(row=2, column=0, columnspan=5, pady=10)
 
     #estilos
     ventana_modal.configure(bg="#FFFFFF")
@@ -187,7 +219,7 @@ for elemento in nombres_figuras:
 for i, (etiqueta_imagen, etiqueta_nombre, boton_area, boton_volumen) in enumerate(matriz_figuras):
     fila = (i // 4) + 1 #division entera, resultado el cosciente, se hace asi para que comience despues del titulo
     columna = i % 4 #modulo de division, resultado el residuo
-    etiqueta_imagen.grid(row=fila * 2, column=columna, padx=10, pady=15)
+    etiqueta_imagen.grid(row=fila, column=columna, padx=10, pady=15)
     etiqueta_nombre.grid(row=fila * 2 + 1, column=columna, padx=10, pady=10)
     boton_area.grid(row=fila * 2 + 2, column=columna, padx=3, pady=3)
     boton_volumen.grid(row=fila * 2 + 3, column=columna, padx=3, pady=3)
