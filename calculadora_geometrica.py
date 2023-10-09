@@ -2,6 +2,8 @@
 # Activar el entorno virtual: Ir a la carpeta SCRIPT y ejecutar el file .\activate
 # devolverse con cd.. y Ejecutar código: py calculadora_geometrica.py
 
+# Hecho en VSCODE
+
 import tkinter as tk
 from tkinter import messagebox
 import math
