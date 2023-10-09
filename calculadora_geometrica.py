@@ -1,7 +1,6 @@
 # Dar permisos varios: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 # Activar el entorno virtual: Ir a la carpeta SCRIPT y ejecutar el file .\activate
-# Ejecutar código: py micodigo.py
-
+# devolverse con cd.. y Ejecutar código: py calculadora_geometrica.py
 
 import tkinter as tk
 from tkinter import messagebox
