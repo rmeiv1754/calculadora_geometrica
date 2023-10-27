@@ -41,35 +41,35 @@ contenedor_figuras.grid(row=2, column=0, columnspan=4)
 #creamos array de imagenes y nombres de cada figura
 nombres_figuras = [
     {
-        "imagen": "img\cube.png",
+        "imagen": "img\\cube.png",
         "nombre": "Cubo"
     },
     {
-        "imagen": "img\sphere.png",
+        "imagen": "img\\sphere.png",
         "nombre": "Esfera"
     },
     {
-        "imagen": "img\cylinder.png",
+        "imagen": "img\\cylinder.png",
         "nombre": "Cilindro"
     },
     {
-        "imagen": "img\cone.png",
+        "imagen": "img\\cone.png",
         "nombre": "Cono"
     },
     {
-        "imagen": "img\pyramid.png",
+        "imagen": "img\\pyramid.png",
         "nombre": "Pirámide"
     },
     {
-        "imagen": "img\parallelepiped.png",
+        "imagen": "img\\parallelepiped.png",
         "nombre": "Paralelepípedo"
     },
     {
-        "imagen": "img\ellipsoid.png",
+        "imagen": "img\\ellipsoid.png",
         "nombre": "Elipsoide"
     },
     {
-        "imagen": "img\octahedron.png",
+        "imagen": "img\\octahedron.png",
         "nombre": "Octaedro"
     },
 ]
