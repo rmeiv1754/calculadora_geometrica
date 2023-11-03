@@ -121,9 +121,9 @@ def calcular_volumen(figura):
 def calcular_area_cubo():
 
     #creamos el modal
-    ventana_modal = tk.Toplevel(ventana)
-    ventana_modal.title("Cálculo de Área - Cubo")
-    ventana_modal.geometry("600x310")
+    ventana_modal = tk.Toplevel(ventana) #crea la ventana 
+    ventana_modal.title("Cálculo de Área - Cubo") # titulo
+    ventana_modal.geometry("600x310") # dimension de la pestaña
 
     frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
     frame_entrada.grid(row=0, column=0, padx=10, pady=10)
@@ -132,7 +132,7 @@ def calcular_area_cubo():
     ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
     ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
     
-    ventana_modal_input = tk.Label(frame_entrada, text="Lado del cubo: ", font=fuente_montserrat, bg="#FFD7D7")
+    ventana_modal_input = tk.Label(frame_entrada, text="Lado del cubo: ", font=fuente_montserrat, bg="#3BDC8B")
     ventana_modal_input.grid(row=1, column=0, padx=10)
 
     lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
@@ -199,7 +199,7 @@ def calcular_area_cubo():
         borrar_resultados_antiguos()
 
         # Mostrar el resultado en un Label dentro de frame_mostrar_re
-        resultado_label = tk.Label(frame_mostrar_re, text=f"Área del cubo: {area} m2", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label = tk.Label(frame_mostrar_re, text=f"Área del cubo: {area} m2", font=fuente_montserrat, bg="#3BDC8B")
         resultado_label.grid(row=0, column=0)
 
         mostrar_cuadro_dialogo()
@@ -217,6 +217,749 @@ def calcular_volumen_cubo():
     ventana_modal = tk.Toplevel(ventana)
     ventana_modal.title("Cálculo de Volumen - Cubo")
     
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    ventana_modal_input = tk.Label(frame_entrada, text="Lado del cubo: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    
+    #menu desplegable
+    opcion_var = tk.StringVar()
+    opcion_var.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones = tk.OptionMenu(frame_entrada, opcion_var, *lista_magnitud)
+    opciones.grid(row=1, column=2, padx=10)
+    
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+    
+
+    def calcular_y_mostrar_volumen():
+        # Obtener el valor ingresado en lado_ingresar
+        lado = float(lado_ingresar.get())
+        magnitud_seleccionada = opcion_var.get()
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        lado_en_metros = lado * conversiones[magnitud_seleccionada]
+
+        # Calcular el volumen del cubo
+        volumen = lado_en_metros * lado_en_metros * lado_en_metros
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"volumen del cubo: {volumen} m3", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular volumen  ", command=calcular_y_mostrar_volumen)
+    calcular_button.grid(row=2, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones.config()
+
+
+def calcular_area_esfera():
+      #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Area - Esfera")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio de la esfera: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    
+    #menu desplegable
+    opcion_var = tk.StringVar()
+    opcion_var.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones = tk.OptionMenu(frame_entrada, opcion_var, *lista_magnitud)
+    opciones.grid(row=1, column=2, padx=10)
+    
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+
+
+    def calcular_y_mostrar_area_esfera():
+        # Obtener el valor ingresado en lado_ingresar
+
+        lado = float(lado_ingresar.get())
+        magnitud_seleccionada = opcion_var.get()
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        radio_en_metros = lado * conversiones[magnitud_seleccionada]
+
+        # Calcular el area del esfera
+        pi = math.pi
+        area = 4 * pi *radio_en_metros**2
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"volumen del esfera: {area} m2", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular area  ", command=calcular_y_mostrar_area_esfera)
+    calcular_button.grid(row=2, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones.config()
+  
+def calcular_volumen_esfera():
+
+        #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Volumen - esfera")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio del esfera: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    
+    #menu desplegable
+    opcion_var = tk.StringVar()
+    opcion_var.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones = tk.OptionMenu(frame_entrada, opcion_var, *lista_magnitud)
+    opciones.grid(row=1, column=2, padx=10)
+    
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+    
+
+    def calcular_y_mostrar_volumen():
+        # Obtener el valor ingresado en lado_ingresar
+        lado = float(lado_ingresar.get())
+        magnitud_seleccionada = opcion_var.get()
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        lado_en_metros = lado * conversiones[magnitud_seleccionada]
+
+        # Calcular el volumen del esfera
+        pi = math.pi
+        frac= Fraction(4,3)
+        volumen = frac* pi* lado_en_metros**3 
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"volumen de la esfera: {volumen} m3", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular volumen  ", command=calcular_y_mostrar_volumen)
+    calcular_button.grid(row=2, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones.config()
+
+
+def calcular_area_cilindro():
+
+          #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Area - cilindro")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    # entrada radio cilindro
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio del cilindro: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    magnitud_radio = tk.StringVar()
+    magnitud_radio.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones_magnitud_radio = tk.OptionMenu(frame_entrada, magnitud_radio, *lista_magnitud)
+    opciones_magnitud_radio.grid(row=1, column=2, padx=10)
+
+    # entrada altura cilindro
+    ventana_modal_input = tk.Label(frame_entrada, text="La altura del cilindro: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=2, column=0, padx=10)
+
+    lado_ingresar2 = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar2.grid(row=2, column=1, padx=10)
+    
+    magnitud_altura = tk.StringVar()
+    magnitud_altura.set("metros")
+    opciones_magnitud_altura = tk.OptionMenu(frame_entrada, magnitud_altura, *lista_magnitud)
+    opciones_magnitud_altura.grid(row=2, column=2, padx=10)
+ 
+
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+        
+    def calcular_y_mostrar_area_cilindro():
+        # Obtener el valor ingresado en lado_ingresar
+
+        radio = float(lado_ingresar.get()) 
+        magnitud_seleccionada_radio = magnitud_radio.get()
+        altura = float(lado_ingresar2.get())
+        magnitud_seleccionada_altura = magnitud_altura.get()
+        
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        radio_en_metros = radio * conversiones[magnitud_seleccionada_radio]
+        altura_en_metros = altura * conversiones[magnitud_seleccionada_altura]
+
+        # Calcular el area del cilindro
+        pi = math.pi
+
+        area = 2 * pi *radio_en_metros* altura_en_metros + 2 * pi * radio_en_metros**2
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"Área del cilindro: {area} m2", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular area  ", command=calcular_y_mostrar_area_cilindro)
+    calcular_button.grid(row=4, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones_magnitud_altura.config()
+    opciones_magnitud_radio.config()
+
+def calcular_volumen_cilindro():
+    
+        #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Volumen - cilindro")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    # entrada radio volumen cilindro
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio del cilindro: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    magnitud_radio = tk.StringVar()
+    magnitud_radio.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones_magnitud_radio = tk.OptionMenu(frame_entrada, magnitud_radio, *lista_magnitud)
+    opciones_magnitud_radio.grid(row=1, column=2, padx=10)
+    # altura cilindro - volumen
+    ventana_modal_input = tk.Label(frame_entrada, text="La altura de la cilindro: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=2, column=0, padx=10)
+
+    lado_ingresar2 = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar2.grid(row=2, column=1, padx=10)
+
+    magnitud_altura = tk.StringVar()
+    magnitud_altura.set("metros")
+    opciones_magnitud_altura = tk.OptionMenu(frame_entrada, magnitud_altura, *lista_magnitud)
+    opciones_magnitud_altura.grid(row=2, column=2, padx=10)
+    
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+    
+
+    def calcular_y_mostrar_volumen():
+        # Obtener el valor ingresado en lado_ingresar
+
+        radio = float(lado_ingresar.get()) 
+        magnitud_seleccionada_radio = magnitud_radio.get()
+        altura = float(lado_ingresar2.get())
+        magnitud_seleccionada_altura = magnitud_altura.get()
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        radio_en_metros = radio * conversiones[magnitud_seleccionada_radio]
+        altura_en_metros = altura * conversiones[magnitud_seleccionada_altura]
+
+        # Calcular el volumen del cilindro
+        pi = math.pi
+        volumen = pi * radio_en_metros**2 * altura_en_metros 
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"volumen de la cilindro: {volumen} m3", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular volumen  ", command=calcular_y_mostrar_volumen)
+    calcular_button.grid(row=3, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones_magnitud_altura.config()
+    opciones_magnitud_radio.config() 
+
+
+def calcular_area_cono():
+
+    #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Area - cilindro")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    # radio cono entrada
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio del cono: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    magnitud_radio = tk.StringVar()
+    magnitud_radio.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones_magnitud_radio = tk.OptionMenu(frame_entrada, magnitud_radio, *lista_magnitud)
+    opciones_magnitud_radio.grid(row=1, column=2, padx=10)
+
+    # altura cono entrada
+    ventana_modal_input = tk.Label(frame_entrada, text="La altura del cono: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=2, column=0, padx=10)
+
+    lado_ingresar2 = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar2.grid(row=2, column=1, padx=10)
+    
+    magnitud_altura = tk.StringVar()
+    magnitud_altura.set("metros")
+    opciones_magnitud_altura = tk.OptionMenu(frame_entrada, magnitud_altura, *lista_magnitud)
+    opciones_magnitud_altura.grid(row=2, column=2, padx=10)
+   
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+        
+    def calcular_y_mostrar_area_cono():
+        # Obtener el valor ingresado en lado_ingresar
+
+        radio = float(lado_ingresar.get()) 
+        magnitud_seleccionada_radio = magnitud_radio.get()
+        altura = float(lado_ingresar2.get())
+        magnitud_seleccionada_altura = magnitud_altura.get()
+        
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        radio_en_metros = radio * conversiones[magnitud_seleccionada_radio]
+        altura_en_metros = altura * conversiones[magnitud_seleccionada_altura]
+
+        # Calcular el area del cono
+        pi = math.pi
+        gen = math.sqrt(altura_en_metros**2 + radio**2)
+        area_lateral = pi * gen * radio_en_metros 
+        area_base = pi * radio_en_metros**2 
+        area = area_lateral + area_base
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"Área del cono: {area} m2", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular area  ", command=calcular_y_mostrar_area_cono)
+    calcular_button.grid(row=4, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones_magnitud_altura.config()
+    opciones_magnitud_radio.config()   
+
+def calcular_volumen_cono():
+    
+        #creamos el modal
+    ventana_modal = tk.Toplevel(ventana)
+    ventana_modal.title("Cálculo de Volumen - cono")
+    
+
+    frame_entrada = tk.Frame(ventana_modal, bg="#FFFFFF")
+    frame_entrada.grid(row=0, column=0, padx=10, pady=10)
+
+    #dividimos en 2 la ventana_modal: 1 frame entrada 2 frame resultados
+    ventana_modal_titulo = tk.Label(frame_entrada, text="Ingresa los datos", font=fuente_titulo_montserrat, justify="center", bg="#FFFFFF")
+    ventana_modal_titulo.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+    
+    # radio cono entrada
+    ventana_modal_input = tk.Label(frame_entrada, text="Radio del cono: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=1, column=0, padx=10)
+
+    lado_ingresar = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar.grid(row=1, column=1, padx=10)
+
+    magnitud_radio = tk.StringVar()
+    magnitud_radio.set("metros")
+    lista_magnitud = ["centímetros", "pulgadas", "metros"]
+    opciones_magnitud_radio = tk.OptionMenu(frame_entrada, magnitud_radio, *lista_magnitud)
+    opciones_magnitud_radio.grid(row=1, column=2, padx=10)
+
+    # altura cono entrada
+    ventana_modal_input = tk.Label(frame_entrada, text="La altura de la cono: ", font=fuente_montserrat, bg="#3BDC8B")
+    ventana_modal_input.grid(row=2, column=0, padx=10)
+
+    lado_ingresar2 = tk.Entry(frame_entrada, width=30, bg="#FFFFFF")
+    lado_ingresar2.grid(row=2, column=1, padx=10)
+
+    magnitud_altura = tk.StringVar()
+    magnitud_altura.set("metros")
+    opciones_magnitud_altura = tk.OptionMenu(frame_entrada, magnitud_altura, *lista_magnitud)
+    opciones_magnitud_altura.grid(row=2, column=2, padx=10)
+    
+    
+    #se muestra la opcion seleccionada
+    frame_resultados = tk.Frame(ventana_modal)
+    frame_resultados.grid(row=1, column=0, padx=10, pady=10)
+
+    etiqueta_resultado = tk.Label(frame_resultados, text="Resultado", font=fuente_titulo_montserrat, bg="#FFFFFF")
+    etiqueta_resultado.grid(row=0, column=0)
+
+    frame_mostrar_re = tk.Frame(ventana_modal, bg="#D9D9D9")
+    frame_mostrar_re.grid(row=2, column=0, padx=10, pady=10, columnspan=5, rowspan=5)
+
+    # Destruye todos los widgets dentro de frame_mostrar_re
+    def borrar_resultados_antiguos():
+        for widget in frame_mostrar_re.winfo_children():
+            widget.destroy()
+    
+    def mostrar_cuadro_dialogo():
+        # Crear un cuadro de diálogo personalizado para preguntar al usuario
+        cuadro_dialogo = tk.Toplevel(ventana_modal)
+        cuadro_dialogo.title("Realizar otro cálculo")
+
+        etiqueta_pregunta = tk.Label(cuadro_dialogo, text="¿Desea realizar otro cálculo?", font=fuente_montserrat, bg="#FFFFFF")
+        etiqueta_pregunta.grid(row=0, column=0, padx=10, pady=10)
+
+        boton_si = tk.Button(cuadro_dialogo, text="Sí", command=cuadro_dialogo.destroy, bg="#FFD7D7")
+        boton_si.grid(row=1, column=0, padx=40, pady=10)
+
+        boton_no = tk.Button(cuadro_dialogo, text="No", command=ventana_modal.destroy)
+        boton_no.grid(row=1, column=1, padx=10, pady=10)
+
+        # Estilos
+        cuadro_dialogo.configure(bg="#FFFFFF")
+    
+
+    def calcular_y_mostrar_volumen():
+        # Obtener el valor ingresado en lado_ingresar
+
+        radio = float(lado_ingresar.get()) 
+        magnitud_seleccionada_radio = magnitud_radio.get()
+        altura = float(lado_ingresar2.get())
+        magnitud_seleccionada_altura = magnitud_altura.get()
+
+        # Definir las relaciones de conversión
+        conversiones = {
+        "centímetros": 0.01,  # 1 metro = 100 centímetros
+        "pulgadas": 0.0254,   # 1 metro = 39.37 pulgadas
+        "metros": 1.0         # No se necesita conversión
+         }
+
+        radio_en_metros = radio * conversiones[magnitud_seleccionada_radio]
+        altura_en_metros = altura * conversiones[magnitud_seleccionada_altura]
+
+        # Calcular el volumen del cono
+        pi = math.pi
+        volumenN = pi* radio_en_metros**2 *altura_en_metros
+        volumen = volumenN / 3 
+
+        # Borra resultados antiguos antes de mostrar uno nuevo
+        borrar_resultados_antiguos()
+
+        # Mostrar el resultado en un Label dentro de frame_mostrar_re
+        resultado_label = tk.Label(frame_mostrar_re, text=f"Volumen de la cono: {volumen} m3 ", font=fuente_montserrat, bg="#D9D9D9")
+        resultado_label.grid(row=0, column=0)
+
+        mostrar_cuadro_dialogo()
+
+
+    calcular_button = tk.Button(frame_entrada, text="Calcular volumen  ", command=calcular_y_mostrar_volumen)
+    calcular_button.grid(row=3, column=0, columnspan=5, pady=10)
+
+    #estilos
+    ventana_modal.configure(bg="#FFFFFF")
+    opciones_magnitud_altura.config()
+    opciones_magnitud_radio.config()
 
 #figuras yotas pelotas: pirámide, paralelepipedo, elipsoide, octaedro
 
